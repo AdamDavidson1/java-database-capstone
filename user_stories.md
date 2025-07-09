@@ -1,6 +1,6 @@
 
 
-# User Stories
+## Admin User Stories
 
 As an Admin user
 I want to be able to add doctors to the system
@@ -26,6 +26,8 @@ As an Admin user
 I want to be able to cancel appointments
 So that if a doctor is no longer in the system I can help users find another doctor
 
+## Doctor User Stories
+
 As a Doctor user
 I want to be able to see my patients
 So that I can communicate with my patients and manage my schedule
@@ -46,6 +48,8 @@ As a Doctor user
 I want to be able to transfer patients to another doctor in the network
 So that patients have to do limited management of doctor associations
 
+## Patient User Stories
+
 As a Patient user
 I want to be able to request care of a doctor in the network
 So that I have the ability to communicate and book appointments
@@ -57,3 +61,11 @@ So that I can receive care from my chosen doctor
 As a Patient user
 I want to be able to cancel appointments
 So that I can communicate that I will not be able to show up
+
+As a Patient user
+I want to be able to see my appointments
+So that I can manage my schedule and ensure I receive care
+
+As a Patient user
+I want to be able to search for doctors in the network
+So that I can find a doctor that meets my needs
