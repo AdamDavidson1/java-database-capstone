@@ -1,7 +1,7 @@
 ## MySQL Relational Database Schema
 
 - Patient
-  - id bigint (Primary Key)
+  - id bigint (Primary Key) AUTO_INCREMENT
   - name varchar(255)
   - avatar_url varchar(255)
   - email varchar(255) UNIQUE
@@ -12,7 +12,7 @@
   - city varchar(50)
   - date_of_birth date
 - Doctor
-  - id bigint (Primary Key)
+  - id bigint (Primary Key) AUTO_INCREMENT
   - name varchar(255)
   - avatar_url varchar(255)
   - email varchar(255) UNIQUE
@@ -20,10 +20,12 @@
   - phone varchar(20)
   - specialty varchar(100)
   - license_number varchar(50)
+  - start_work_time time
+  - end_work_time time
   - updated_at
   - created_at
 - Office
-  - id bigint (Primary Key)
+  - id bigint (Primary Key) AUTO_INCREMENT
   - name varchar(255)
   - address varchar(255)
   - state varchar(20)
@@ -32,22 +34,33 @@
   - updated_at
   - created_at
 - Office_Doctor_Association
-  - id bigint (Primary Key)
-  - doctor_id (Foreign Key referencing Doctor)
-  - office_id (Foreign Key referencing Office)
+  - id bigint (Primary Key) AUTO_INCREMENT
+  - doctor_id (Foreign Key referencing Doctor id)
+  - office_id (Foreign Key referencing Office id)
   - updated_at
   - created_at
 - Appointment
-  - id bigint (Primary Key)
-  - patient_id (Foreign Key referencing Patient)
-  - doctor_id (Foreign Key referencing Doctor)
-  - office_id (Foreign Key referencing Office)
+  - id bigint (Primary Key) AUTO_INCREMENT
+  - patient_id (Foreign Key referencing Patient id)
+  - doctor_id (Foreign Key referencing Doctor id)
+  - office_id (Foreign Key referencing Office id)
   - appointment_date datetime
   - status ENUM(scheduled, completed, cancelled)
+  - archived BOOLEAN DEFAULT false
+  - updated_at
+  - created_at
+- Payments
+  - id bigint (Primary Key) AUTO_INCREMENT
+  - patient_id (Foreign Key referencing Patient id)
+  - doctor_id (Foreign Key referencing Doctor id)
+  - appointment_id (Foreign Key referencing Appointment id)
+  - amount decimal(10,2)
+  - payment_date datetime
+  - status ENUM(pending, completed, failed)
   - updated_at
   - created_at
 - Admin
-  - id bigint (Primary Key)
+  - id bigint (Primary Key) AUTO_INCREMENT
   - name varchar(255)
   - email varchar(255) UNIQUE
   - password varchar(255)
@@ -55,12 +68,22 @@
 ## MongoDB Document Schema
 - Prescription
   - _id ObjectId (Primary Key)
-  - patient_id ObjectId (Foreign Key referencing Patient)
-  - doctor_id ObjectId (Foreign Key referencing Doctor)
+  - patient object
+    - id ObjectId (Foreign Key referencing Patient)
+    - name string
+    - email string
+  - doctor object
+    - id ObjectId (Foreign Key referencing Doctor)
+    - name string
+    - specialty string
   - medication array of objects
     - name string
     - dosage string
     - instructions string
+    - refills int
+  - references array of objects
+    - type string (appointment, note)
+    - reference_id ObjectId (Foreign Key referencing Appointment or DoctorNotes)
   - date_prescribed date
   - created_at date
 - Feedback
@@ -70,6 +93,31 @@
   - rating int (1-5)
   - comments string
   - created_at date
+- DoctorNotes
+  - _id ObjectId (Primary Key)
+  - patient_id ObjectId (Foreign Key referencing Patient)
+  - doctor_id ObjectId (Foreign Key referencing Doctor)
+  - note string
+  - attachments array of objects
+    - file_name string
+    - file_url string
+  - tags array of strings
+    - tag string
+  - date_created date
+- Messages
+  - _id ObjectId (Primary Key)
+  - patient_id ObjectId (Foreign Key referencing Patient id)
+  - doctor_id ObjectId (Foreign Key referencing Doctor id)
+  - content string
+  - attachments array of objects
+    - file_name string
+    - file_url string
+  - timestamp date
+  - references array of objects
+    - type string (appointment, prescription, note)
+    - reference_id ObjectId (Foreign Key referencing Appointment or Prescription or DoctorNotes)
+  tags array of strings
+    - tag string
 - Logs
   - _id ObjectId (Primary Key)
   - user_id ObjectId (Foreign Key referencing Patient or Doctor or Admin)
