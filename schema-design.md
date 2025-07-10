@@ -1,0 +1,79 @@
+## MySQL Relational Database Schema
+
+- Patient
+  - id bigint (Primary Key)
+  - name varchar(255)
+  - avatar_url varchar(255)
+  - email varchar(255) UNIQUE
+  - password varchar(255)
+  - phone varchar(20)
+  - address varchar(255)
+  - state varchar(20)
+  - city varchar(50)
+  - date_of_birth date
+- Doctor
+  - id bigint (Primary Key)
+  - name varchar(255)
+  - avatar_url varchar(255)
+  - email varchar(255) UNIQUE
+  - password varchar(255)
+  - phone varchar(20)
+  - specialty varchar(100)
+  - license_number varchar(50)
+  - updated_at
+  - created_at
+- Office
+  - id bigint (Primary Key)
+  - name varchar(255)
+  - address varchar(255)
+  - state varchar(20)
+  - city varchar(50)
+  - phone varchar(20)
+  - updated_at
+  - created_at
+- Office_Doctor_Association
+  - id bigint (Primary Key)
+  - doctor_id (Foreign Key referencing Doctor)
+  - office_id (Foreign Key referencing Office)
+  - updated_at
+  - created_at
+- Appointment
+  - id bigint (Primary Key)
+  - patient_id (Foreign Key referencing Patient)
+  - doctor_id (Foreign Key referencing Doctor)
+  - office_id (Foreign Key referencing Office)
+  - appointment_date datetime
+  - status ENUM(scheduled, completed, cancelled)
+  - updated_at
+  - created_at
+- Admin
+  - id bigint (Primary Key)
+  - name varchar(255)
+  - email varchar(255) UNIQUE
+  - password varchar(255)
+
+## MongoDB Document Schema
+- Prescription
+  - _id ObjectId (Primary Key)
+  - patient_id ObjectId (Foreign Key referencing Patient)
+  - doctor_id ObjectId (Foreign Key referencing Doctor)
+  - medication array of objects
+    - name string
+    - dosage string
+    - instructions string
+  - date_prescribed date
+  - created_at date
+- Feedback
+  - _id ObjectId (Primary Key)
+  - patient_id ObjectId (Foreign Key referencing Patient)
+  - doctor_id ObjectId (Foreign Key referencing Doctor)
+  - rating int (1-5)
+  - comments string
+  - created_at date
+- Logs
+  - _id ObjectId (Primary Key)
+  - user_id ObjectId (Foreign Key referencing Patient or Doctor or Admin)
+  - severity string (info, warning, error)
+  - message string
+  - reference_id ObjectId (Foreign Key referencing Appointment or Prescription)
+  - created_at date
